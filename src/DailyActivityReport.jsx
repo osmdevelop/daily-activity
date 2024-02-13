@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Formik, Form, Field, useField, FieldArray, ErrorMessage } from 'formik';
-import { PDFDownloadLink, PDFViewer, Document, Page, Text, View, StyleSheet } from '@react-pdf/renderer';
+import { PDFDownloadLink } from '@react-pdf/renderer';
 import * as Yup from 'yup';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
@@ -18,24 +18,24 @@ const DailyActivityReport = () => {
     clients: [{ fullName: '', applicationFiled: [], status: '', otherServices: '' }],
   };
 
-const FormikDatePicker = ({ ...props }) => {
-  // Use Formik's useField hook to tie the DatePicker to Formik's state and validation
-  const [field, meta, helpers] = useField(props);
-  return (
-    <div className="form-group">
-      <DatePicker
-        {...field}
-        {...props}
-        selected={(field.value && new Date(field.value)) || null}
-        onChange={value => helpers.setValue(value)}
-        wrapperClassName="date-picker"
-      />
-      {meta.touched && meta.error ? (
-        <div className="field-error">{meta.error}</div>
-      ) : null}
-    </div>
-  );
-};
+  const FormikDatePicker = ({ ...props }) => {
+    // Use Formik's useField hook to tie the DatePicker to Formik's state and validation
+    const [field, meta, helpers] = useField(props);
+    return (
+      <div className="form-group">
+        <DatePicker
+          {...field}
+          {...props}
+          selected={(field.value && new Date(field.value)) || null}
+          onChange={value => helpers.setValue(value)}
+          wrapperClassName="date-picker"
+        />
+        {meta.touched && meta.error ? (
+          <div className="field-error">{meta.error}</div>
+        ) : null}
+      </div>
+    );
+  };
 
   const [formData, setFormData] = useState(null);
   const [submitted, setSubmitted] = useState(false);
@@ -127,47 +127,47 @@ const FormikDatePicker = ({ ...props }) => {
                           <Field name={`clients.${index}.fullName`} type="text" className="form-control" />
                           <ErrorMessage name={`clients.${index}.fullName`} component="div" className="field-error" />
                         </div>
-                        
-                <div className="form-group">
-                  <label>Application Filed:</label>
-                  <div role="group" aria-labelledby="checkbox-group">
-                    <label className="checkbox-label">
-                      TPS
-                      <Field type="checkbox" name={`clients.${index}.applicationFiled`} value="TPS" />
-                      <span className="checkmark"></span>
-                    </label>
-                    <label className="checkbox-label">
-                      EAD
-                      <Field type="checkbox" name={`clients.${index}.applicationFiled`} value="EAD" />
-                      <span className="checkmark"></span>
-                    </label>
-                    <label className="checkbox-label">
-                      SNAP
-                      <Field type="checkbox" name={`clients.${index}.applicationFiled`} value="SNAP" />
-                      <span className="checkmark"></span>
-                    </label>
-                    <label className="checkbox-label">
-                      Cash Assistance
-                      <Field type="checkbox" name={`clients.${index}.applicationFiled`} value="Cash Assistance" />
-                      <span className="checkmark"></span>
-                    </label>
-                    <label className="checkbox-label">
-                      M.A.
-                      <Field type="checkbox" name={`clients.${index}.applicationFiled`} value="M.A." />
-                      <span className="checkmark"></span>
-                    </label>
-                    <label className="checkbox-label">
-                      HFS
-                      <Field type="checkbox" name={`clients.${index}.applicationFiled`} value="HFS" />
-                      <span className="checkmark"></span>
-                    </label>
-                    <label className="checkbox-label">
-                      (Redetermination)
-                      <Field type="checkbox" name={`clients.${index}.applicationFiled`} value="(Redetermination)" />
-                      <span className="checkmark"></span>
-                    </label>
-                  </div>
-                </div>
+
+                        <div className="form-group">
+                          <label>Application Filed:</label>
+                          <div role="group" aria-labelledby="checkbox-group">
+                            <label className="checkbox-label">
+                              TPS
+                              <Field type="checkbox" name={`clients.${index}.applicationFiled`} value="TPS" />
+                              <span className="checkmark"></span>
+                            </label>
+                            <label className="checkbox-label">
+                              EAD
+                              <Field type="checkbox" name={`clients.${index}.applicationFiled`} value="EAD" />
+                              <span className="checkmark"></span>
+                            </label>
+                            <label className="checkbox-label">
+                              SNAP
+                              <Field type="checkbox" name={`clients.${index}.applicationFiled`} value="SNAP" />
+                              <span className="checkmark"></span>
+                            </label>
+                            <label className="checkbox-label">
+                              Cash Assistance
+                              <Field type="checkbox" name={`clients.${index}.applicationFiled`} value="Cash Assistance" />
+                              <span className="checkmark"></span>
+                            </label>
+                            <label className="checkbox-label">
+                              M.A.
+                              <Field type="checkbox" name={`clients.${index}.applicationFiled`} value="M.A." />
+                              <span className="checkmark"></span>
+                            </label>
+                            <label className="checkbox-label">
+                              HFS
+                              <Field type="checkbox" name={`clients.${index}.applicationFiled`} value="HFS" />
+                              <span className="checkmark"></span>
+                            </label>
+                            <label className="checkbox-label">
+                              (Redetermination)
+                              <Field type="checkbox" name={`clients.${index}.applicationFiled`} value="(Redetermination)" />
+                              <span className="checkmark"></span>
+                            </label>
+                          </div>
+                        </div>
 
 
                         <div className="form-group">

@@ -174,9 +174,9 @@ const DailyActivityReport = () => {
                           <label>Status:</label>
                           <Field as="select" name={`clients.${index}.status`} className="form-control">
                             <option value="">Select Status</option>
-                            <option value="filled out">Filled Out</option>
-                            <option value="took information">Took Information</option>
-                            <option value="additional documents needed">Additional Documents Needed</option>
+                            <option value="Filled out">Filled Out</option>
+                            <option value="Took information to submit later">Took Information to submit later</option>
+                            <option value="Additional documents needed">Additional Documents Needed</option>
                             <option value="Submitted">Submitted</option>
                             <option value="Scanned">Scanned</option>
                           </Field>
@@ -191,6 +191,7 @@ const DailyActivityReport = () => {
                             <option value="Picked up the envelope">Picked up the envelope</option>
                             <option value="Other IDHS">Other IDHS</option>
                             <option value="Other non-IDHS">Other non-IDHS</option>
+                            <option value="Preparation, Copies">Preparation, Copies</option>
                           </Field>
                           <ErrorMessage name={`clients.${index}.otherServices`} component="div" className="field-error" />
                         </div>

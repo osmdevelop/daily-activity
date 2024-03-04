@@ -90,6 +90,7 @@ const DailyActivityReport = () => {
                 <option value="Darina Semenets">Darina Semenets</option>
                 <option value="Inha Ruda">Inha Ruda</option>
                 <option value="Iryna Hryniv">Iryna Hryniv</option>
+                <option value="Dariia Mykhalko">Dariia Mykhalko</option>
               </Field>
               <ErrorMessage name="caseManagerName" component="div" className="field-error" />
             </div>

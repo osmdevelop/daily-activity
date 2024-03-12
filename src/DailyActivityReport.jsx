@@ -143,6 +143,11 @@ const DailyActivityReport = () => {
                               <span className="checkmark"></span>
                             </label>
                             <label className="checkbox-label">
+                              Re-Parole
+                              <Field type="checkbox" name={`clients.${index}.applicationFiled`} value="Re-Parole" />
+                              <span className="checkmark"></span>
+                            </label>
+                            <label className="checkbox-label">
                               SNAP
                               <Field type="checkbox" name={`clients.${index}.applicationFiled`} value="SNAP" />
                               <span className="checkmark"></span>

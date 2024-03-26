@@ -7,6 +7,12 @@ import 'react-datepicker/dist/react-datepicker.css';
 import loadingGif from './loading.gif';
 import logo from './logo.png';
 
+import { addReport } from './services/reportService'; // Adjust the path as needed
+
+
+//firebase:
+import db from './firebase.js';
+
 
 import DocRender from './DocRender.jsx';
 
@@ -41,16 +47,26 @@ const DailyActivityReport = () => {
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  const handleSubmit = (values) => {
+const handleSubmit = async (values) => {
+  setLoading(true);
+  try {
+    // First, save the report to Firestore
+    const docRef = await addReport(values);
+    console.log("Report added to Firestore with ID:", docRef.id);
+    
+    // Then, set formData for PDF generation
     setFormData(values);
-    setSubmitted(true); // Indicate the form has been submitted to show the download link
-    setLoading(true);
-
-    // Deactivate loading after 0.5 seconds
-    setTimeout(() => {
+    setSubmitted(true); // This will make the PDFDownloadLink appear
+  } catch (error) {
+    console.error("Error:", error);
+    // Handle the error appropriately (show an error message to the user, etc.)
+  }
+  setTimeout(() => {
       setLoading(false);
     }, 500);
-  };
+};
+
+
 
   const validationSchema = Yup.object().shape({
     caseManagerName: Yup.string().required('Case manager name is required'),
@@ -227,7 +243,7 @@ const DailyActivityReport = () => {
         )}
       </Formik>
 
-      {submitted && formData && (
+{submitted && formData && (
         <>
           {loading ? (
             <div className='top'><img className='loading-gif' src={loadingGif} alt="loading..." /></div> // You can replace this with a more sophisticated loading animation

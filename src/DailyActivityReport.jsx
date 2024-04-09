@@ -4,7 +4,8 @@ import { PDFDownloadLink } from '@react-pdf/renderer';
 import * as Yup from 'yup';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
-import loadingGif from './loading.gif';
+import loadingGif from './assets/loading.gif';
+import trashIcon from './assets/trash.svg';
 import logo from './logo.png';
 
 import { addReport } from './services/reportService'; // Adjust the path as needed
@@ -138,7 +139,17 @@ const handleSubmit = async (values) => {
                     values.clients.map((client, index) => (
                       <div className="client-entry" key={index}>
                         <hr />
+
+                        <div className='remove-btn'>
                         <h4 className='client-num'>Client {index + 1}</h4>
+                        <button
+                          type="button"
+                          className="secondary remove"
+                          onClick={() => remove(index)}
+                        >
+                          <img src={trashIcon} alt="trash icon" />
+                        </button>
+                        </div>
                         <div className="form-group">
                           <label>Client Full Name:</label>
                           <Field name={`clients.${index}.fullName`} type="text" className="form-control" />
@@ -218,13 +229,7 @@ const handleSubmit = async (values) => {
                           <ErrorMessage name={`clients.${index}.otherServices`} component="div" className="field-error" />
                         </div>
 
-                        <button
-                          type="button"
-                          className="secondary remove"
-                          onClick={() => remove(index)}
-                        >
-                          Remove <span>-</span>
-                        </button>
+                        
                       </div>
                     ))}
                   <button

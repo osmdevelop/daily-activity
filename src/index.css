@@ -20,6 +20,14 @@
   padding: 20px;
 }
 
+.remove-btn {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  margin: 0;
+}
+
+
 .form-group {
   margin-bottom: 20px;
 }
@@ -60,12 +68,19 @@
   background-color: #7f7f00;
 }
 
+.remove img {
+  width: 25px;
+}
+
 .remove {
-  background-color: #c20f02;
+  background-color: #b9efff;
+  /* opacity: 90%; */
 }
 
 .remove:hover {
-  background-color: #7f0000;
+  background-color: #8bddf7;
+  transition: 0.225s;
+  opacity: 75%;
 }
 
 .secondary {

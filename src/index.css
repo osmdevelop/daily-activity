@@ -73,12 +73,13 @@
 }
 
 .remove {
-  background-color: #b9efff;
+  background-color: #dbf6ff;
+
   /* opacity: 90%; */
 }
 
 .remove:hover {
-  background-color: #8bddf7;
+  background-color: #c2f0ff;
   transition: 0.225s;
   opacity: 75%;
 }

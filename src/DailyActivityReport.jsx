@@ -7,6 +7,8 @@ import 'react-datepicker/dist/react-datepicker.css';
 import loadingGif from './assets/loading.gif';
 import trashIcon from './assets/trash.svg';
 import logo from './logo.png';
+import { useNavigate } from 'react-router-dom'; // Import useNavigate
+
 
 import { addReport } from './services/reportService'; // Adjust the path as needed
 
@@ -17,14 +19,16 @@ import db from './firebase.js';
 
 import DocRender from './DocRender.jsx';
 
+
+
 const DailyActivityReport = () => {
   const initialValues = {
     caseManagerName: '',
     date: '',
     location: '',
-    clients: [{ fullName: '', applicationFiled: [], status: '', otherServices: '' }],
+    clients: [{ fullName: '', applicationFiled: [], status: '', otherServices: '', caseNotes: '' }],
   };
-
+const navigate = useNavigate();
   const FormikDatePicker = ({ ...props }) => {
     // Use Formik's useField hook to tie the DatePicker to Formik's state and validation
     const [field, meta, helpers] = useField(props);
@@ -51,12 +55,25 @@ const DailyActivityReport = () => {
 const handleSubmit = async (values) => {
   setLoading(true);
   try {
-    // First, save the report to Firestore
-    const docRef = await addReport(values);
+    // Format the date as a string in MM/DD/YYYY
+    const formattedDate = new Date(values.date).toLocaleDateString('en-US', {
+      month: '2-digit',
+      day: '2-digit',
+      year: 'numeric'
+    });
+
+    // Include the formatted date in the report data
+    const reportData = {
+      ...values,
+      date: formattedDate, // Use the formatted date string instead of the Date object
+    };
+
+    // Save the report to Firestore
+    const docRef = await addReport(reportData);
     console.log("Report added to Firestore with ID:", docRef.id);
     
     // Then, set formData for PDF generation
-    setFormData(values);
+    setFormData(reportData);
     setSubmitted(true); // This will make the PDFDownloadLink appear
   } catch (error) {
     console.error("Error:", error);
@@ -76,7 +93,6 @@ const handleSubmit = async (values) => {
     clients: Yup.array().of(
       Yup.object().shape({
         fullName: Yup.string().required('Client full name is required'),
-        // applicationFiled: Yup.array().min(1, 'At least one application must be filed'),
         status: Yup.string().required('Status is required'),
         otherServices: Yup.string().required('Other services provided is required'),
       })
@@ -85,11 +101,14 @@ const handleSubmit = async (values) => {
 
   return (
     <div className="container">
+      <button onClick={() => navigate('/admin')} className="btn btn-secondary">
+        Admin
+      </button>
       <div className='company-title'>
         <img src={logo} alt="logo" />
         <h3 className='company-name'>Selfreliance Association</h3>
       </div>
-      <h1 className='form-title'>Daily Activity Report</h1>
+      <h1 className='form-title'>Daily Activity Report</h1> 
       <Formik
         initialValues={initialValues}
         validationSchema={validationSchema}
@@ -156,6 +175,7 @@ const handleSubmit = async (values) => {
                           <ErrorMessage name={`clients.${index}.fullName`} component="div" className="field-error" />
                         </div>
 
+                        <div className="client-entry-case-notes">
                         <div className="form-group">
                           <label>Application Filed:</label>
                           <div role="group" aria-labelledby="checkbox-group">
@@ -185,7 +205,7 @@ const handleSubmit = async (values) => {
                               <span className="checkmark"></span>
                             </label>
                             <label className="checkbox-label">
-                              M.A.
+                              Medicaid
                               <Field type="checkbox" name={`clients.${index}.applicationFiled`} value="M.A." />
                               <span className="checkmark"></span>
                             </label>
@@ -200,6 +220,18 @@ const handleSubmit = async (values) => {
                               <span className="checkmark"></span>
                             </label>
                           </div>
+                        </div>
+
+                        <div className="form-group case-notes">
+                          <label>Case Notes:</label>
+                          <Field
+                            name={`clients.${index}.caseNotes`}
+                            as="textarea"
+                            placeholder="Enter case notes"
+                            className="form-control case-notes-input"
+                          />
+                          <ErrorMessage name={`clients.${index}.caseNotes`} component="div" className="field-error" />
+                        </div>
                         </div>
 
 

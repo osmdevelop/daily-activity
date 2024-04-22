@@ -284,3 +284,23 @@ hr {
   color: #006b6b;
   margin-bottom: 10px;
 }
+
+.client-entry-case-notes {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.form-group.case-notes {
+  flex: 1;
+  margin-left: 8em;
+  /* Adjust the margin as needed */
+}
+
+.form-group.case-notes .case-notes-input {
+  width: 100%; /* Or any other width as per your design */
+  height: auto; /* Adjust height as needed, or keep it auto */
+  min-height: 50px; /* Minimum height to start with */
+  resize: vertical;
+  max-height: 200px;
+}

@@ -1,6 +1,7 @@
 // DocRender.jsx
 import React from 'react';
 import { Document, Page, Text, View, StyleSheet } from '@react-pdf/renderer';
+// import { styles } from './reportStyles';
 
 // Create styles
 const styles = StyleSheet.create({
@@ -33,6 +34,7 @@ const styles = StyleSheet.create({
   tableRow: {
     margin: 'auto',
     flexDirection: 'row',
+    flexWrap: 'wrap',
   },
   tableColHeader: {
     backgroundColor: '#afb2b3',
@@ -42,7 +44,7 @@ const styles = StyleSheet.create({
     borderBottomColor: '#000',
     borderWidth: 1,
     borderLeftWidth: 0,
-    borderTopWidth: 0,
+    borderTopWidth: 1,
     alignItems: 'center',
     justifyContent: 'center',
     fontWeight: 'bold',
@@ -54,7 +56,7 @@ const styles = StyleSheet.create({
     borderColor: '#bfbfbf',
     borderWidth: 1,
     borderLeftWidth: 0,
-    borderTopWidth: 0,
+    borderTopWidth: 1,
     alignItems: 'center',
     justifyContent: 'center',
     fontSize: 10,
@@ -63,6 +65,9 @@ const styles = StyleSheet.create({
     margin: 5,
     fontSize: 10,
   },
+    margin: {
+    marginBottom: '10px',
+  }
 });
 
 const formatDate = (date) => {
@@ -113,6 +118,10 @@ const DocRender = ({ formData }) => {
               <View style={styles.tableCol}>
                 <Text style={styles.tableCell}>{client.otherServices}</Text>
               </View>
+              <View style={{...styles.tableCol, ...styles.margin}}>
+              <Text style={styles.tableCell}>Case Notes: {client.caseNotes}</Text>
+              <br></br>
+            </View>
             </View>
           ))}
         </View>

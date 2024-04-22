@@ -6,6 +6,9 @@ import { db } from './firebase';
 import { collection, query, where, getDocs, Timestamp } from "firebase/firestore";
 import { PDFDownloadLink } from '@react-pdf/renderer';
 import ReportRender from './ReportRender';
+import { styles } from './reportStyles';
+
+import moment from 'moment';
 
 const AdminPage = () => {
   const [caseManagers, setCaseManagers] = useState([]);
@@ -49,30 +52,18 @@ const AdminPage = () => {
 
   setLoading(true);
 
-  const selectedDate = new Date(date);
-  const startOfSelectedDateUtc = new Date(Date.UTC(selectedDate.getFullYear(), selectedDate.getMonth(), selectedDate.getDate()));
-  const endOfSelectedDateUtc = new Date(startOfSelectedDateUtc);
-  endOfSelectedDateUtc.setUTCHours(23, 59, 59, 999);
+  // Format the date with moment.js to ensure it matches the Firestore format
+  const formattedDate = moment(date).format('MM/DD/YYYY');
 
-  // Parse the selected date and subtract 5 hours to align with UTC−05:00
-  const reportDate = new Date(date);
-  // Adjust for the timezone offset
-  reportDate.setHours(reportDate.getHours() - 5);
-
-  const startOfDay = new Date(reportDate.setHours(0, 0, 0, 0)); // Start of day
-  const endOfDay = new Date(reportDate.setHours(23, 59, 59, 999)); // End of day
-
-  // Format the dates to match Firestore's timestamp format
- const startOfDayTimestamp = Timestamp.fromDate(startOfSelectedDateUtc);
-  const endOfDayTimestamp = Timestamp.fromDate(endOfSelectedDateUtc);
+ // Format the date to match the Firestore format
+  const dateObject = new Date(date);
 
   // Query Firestore for the report
   const reportsRef = collection(db, "reports");
   const q = query(
     reportsRef,
     where("caseManagerName", "==", selectedCaseManager),
-    where("date", ">=", startOfDayTimestamp),
-    where("date", "<=", endOfDayTimestamp)
+    where("date", "==", formattedDate)
   );
 
   try {
@@ -80,13 +71,7 @@ const AdminPage = () => {
     const reports = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
 
     if (reports.length > 0) {
-      // Process the data to fit the format expected by ReportRender
-      // Assuming reports contain the field 'date' as a Firestore Timestamp
-      const processedReports = reports.map(r => ({
-        ...r,
-        date: r.date.toDate() // Convert Firestore Timestamp to JavaScript Date object
-      }));
-      setReportData(processedReports[0]); // Assuming we only want the first report
+      setReportData(reports[0]); // Assuming we only want the first report
     } else {
       alert('No reports found for the selected manager and date.');
       setReportData(null);

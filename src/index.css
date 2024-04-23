@@ -1,3 +1,10 @@
+body {
+  background-image: url('./assets/bg.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
 .company-title {
   display: flex;
   justify-content: center;

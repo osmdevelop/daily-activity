@@ -8,16 +8,14 @@ import loadingGif from './assets/loading.gif';
 import trashIcon from './assets/trash.svg';
 import logo from './logo.png';
 import { useNavigate } from 'react-router-dom'; // Import useNavigate
-
-
 import { addReport } from './services/reportService'; // Adjust the path as needed
+import DocRender from './DocRender.jsx';
 
 
 //firebase:
 import db from './firebase.js';
 
 
-import DocRender from './DocRender.jsx';
 
 
 
@@ -26,9 +24,9 @@ const DailyActivityReport = () => {
     caseManagerName: '',
     date: '',
     location: '',
-    clients: [{ fullName: '', applicationFiled: [], status: '', otherServices: '', infoAndRef: [], services: [], caseNotes: '' }],
+    clients: [{ fullName: '', applicationFiled: [], status: '', infoAndRef: [], services: [], caseNotes: '' }],
   };
-const navigate = useNavigate();
+  const navigate = useNavigate();
   const FormikDatePicker = ({ ...props }) => {
     // Use Formik's useField hook to tie the DatePicker to Formik's state and validation
     const [field, meta, helpers] = useField(props);
@@ -52,37 +50,37 @@ const navigate = useNavigate();
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
 
-const handleSubmit = async (values) => {
-  setLoading(true);
-  try {
-    // Format the date as a string in MM/DD/YYYY
-    const formattedDate = new Date(values.date).toLocaleDateString('en-US', {
-      month: '2-digit',
-      day: '2-digit',
-      year: 'numeric'
-    });
+  const handleSubmit = async (values) => {
+    setLoading(true);
+    try {
+      // Format the date as a string in MM/DD/YYYY
+      const formattedDate = new Date(values.date).toLocaleDateString('en-US', {
+        month: '2-digit',
+        day: '2-digit',
+        year: 'numeric'
+      });
 
-    // Include the formatted date in the report data
-    const reportData = {
-      ...values,
-      date: formattedDate, // Use the formatted date string instead of the Date object
-    };
+      // Include the formatted date in the report data
+      const reportData = {
+        ...values,
+        date: formattedDate, // Use the formatted date string instead of the Date object
+      };
 
-    // Save the report to Firestore
-    const docRef = await addReport(reportData);
-    console.log("Report added to Firestore with ID:", docRef.id);
-    
-    // Then, set formData for PDF generation
-    setFormData(reportData);
-    setSubmitted(true); // This will make the PDFDownloadLink appear
-  } catch (error) {
-    console.error("Error:", error);
-    // Handle the error appropriately (show an error message to the user, etc.)
-  }
-  setTimeout(() => {
+      // Save the report to Firestore
+      const docRef = await addReport(reportData);
+      console.log("Report added to Firestore with ID:", docRef.id);
+
+      // Then, set formData for PDF generation
+      setFormData(reportData);
+      setSubmitted(true); // This will make the PDFDownloadLink appear
+    } catch (error) {
+      console.error("Error:", error);
+      // Handle the error appropriately (show an error message to the user, etc.)
+    }
+    setTimeout(() => {
       setLoading(false);
     }, 500);
-};
+  };
 
 
 
@@ -110,7 +108,7 @@ const handleSubmit = async (values) => {
         <img src={logo} alt="logo" />
         <h3 className='company-name'>Selfreliance Association</h3>
       </div>
-      <h1 className='form-title'>Daily Activity Report</h1> 
+      <h1 className='form-title'>Daily Activity Report</h1>
       <Formik
         initialValues={initialValues}
         validationSchema={validationSchema}
@@ -176,14 +174,14 @@ const handleSubmit = async (values) => {
                         <hr />
 
                         <div className='remove-btn'>
-                        <h4 className='client-num'>{client.fullName || `Client ${index + 1}`}</h4>
-                        <button
-                          type="button"
-                          className="secondary remove"
-                          onClick={() => remove(index)}
-                        >
-                          <img src={trashIcon} alt="trash icon" />
-                        </button>
+                          <h4 className='client-num'>{client.fullName || `Client ${index + 1}`}</h4>
+                          <button
+                            type="button"
+                            className="secondary remove"
+                            onClick={() => remove(index)}
+                          >
+                            <img src={trashIcon} alt="trash icon" />
+                          </button>
                         </div>
                         <div className="form-group">
                           <label>Client Full Name:</label>
@@ -193,7 +191,7 @@ const handleSubmit = async (values) => {
 
                         <div className="client-entry-applications">
                           <div className="form-group applications">
-                            <label>Application Filed:</label>
+                            <label>Activity:</label>
                             <div role="group" aria-labelledby="checkbox-group">
                               <label className="checkbox-label">
                                 TPS
@@ -242,33 +240,38 @@ const handleSubmit = async (values) => {
                             <label>Services:</label>
                             <div role="group" aria-labelledby="checkbox-group">
                               <label className="checkbox-label">
+                                ESL Classes
+                                <Field type="checkbox" name={`clients.${index}.applicationFiled`} value="ESL Classes" />
+                                <span className="checkmark"></span>
+                              </label>
+                              <label className="checkbox-label">
                                 Resume Creation
-                                <Field type="checkbox" name={`clients.${index}.services`} value="Resume Creation" />
+                                <Field type="checkbox" name={`clients.${index}.applicationFiled`} value="Resume Creation" />
                                 <span className="checkmark"></span>
                               </label>
                               <label className="checkbox-label">
                                 Interview Preparation
-                                <Field type="checkbox" name={`clients.${index}.services`} value="Interview Preparation" />
+                                <Field type="checkbox" name={`clients.${index}.applicationFiled`} value="Interview Preparation" />
                                 <span className="checkmark"></span>
                               </label>
                               <label className="checkbox-label">
                                 Job Placement
-                                <Field type="checkbox" name={`clients.${index}.services`} value="Job Placement" />
+                                <Field type="checkbox" name={`clients.${index}.applicationFiled`} value="Job Placement" />
                                 <span className="checkmark"></span>
                               </label>
                               <label className="checkbox-label">
                                 Medicare
-                                <Field type="checkbox" name={`clients.${index}.services`} value="Medicare" />
+                                <Field type="checkbox" name={`clients.${index}.applicationFiled`} value="Medicare" />
                                 <span className="checkmark"></span>
                               </label>
                               <label className="checkbox-label">
                                 I-134A
-                                <Field type="checkbox" name={`clients.${index}.services`} value="I-134A" />
+                                <Field type="checkbox" name={`clients.${index}.applicationFiled`} value="I-134A" />
                                 <span className="checkmark"></span>
                               </label>
                             </div>
                           </div>
-                          
+
                           <div className="form-group case-notes">
                             <label>Case Notes:</label>
                             <Field
@@ -280,9 +283,9 @@ const handleSubmit = async (values) => {
                             <ErrorMessage name={`clients.${index}.caseNotes`} component="div" className="field-error" />
                           </div>
 
-                          
 
-                      </div>
+
+                        </div>
 
 
                         <div className="form-group">
@@ -294,6 +297,8 @@ const handleSubmit = async (values) => {
                             <option value="Additional documents needed">Additional Documents Needed</option>
                             <option value="Submitted">Submitted</option>
                             <option value="Scanned">Scanned</option>
+                            <option value="Picked up the envelope">Picked up the envelope</option>
+                            <option value="Provided Service">Provided Service</option>
                           </Field>
                           <ErrorMessage name={`clients.${index}.status`} component="div" className="field-error" />
                         </div>
@@ -349,7 +354,7 @@ const handleSubmit = async (values) => {
                         </div>
 
 
-                        <div className="form-group">
+                        {/* <div className="form-group">
                           <label>Other Services Provided (optional):</label>
                           <Field as="select" name={`clients.${index}.otherServices`} className="form-control">
                             <option value="">Select Service</option>
@@ -360,13 +365,13 @@ const handleSubmit = async (values) => {
                             <option value="Preparation, Copies">Preparation, Copies</option>
                           </Field>
                           <ErrorMessage name={`clients.${index}.otherServices`} component="div" className="field-error" />
-                        </div>
+                        </div> */}
                       </div>
                     ))}
                   <button
                     type="button"
                     className="secondary add"
-                    onClick={() => push({ fullName: '', applicationFiled: [], status: '', otherServices: '', infoAndRef: [], services: [], })}
+                    onClick={() => push({ fullName: '', applicationFiled: [], status: '', infoAndRef: [], services: [], })}
                   >
                     Add Next Client <span>+</span>
                   </button>
@@ -379,7 +384,7 @@ const handleSubmit = async (values) => {
         )}
       </Formik>
 
-{submitted && formData && (
+      {submitted && formData && (
         <>
           {loading ? (
             <div className='top'><img className='loading-gif' src={loadingGif} alt="loading..." /></div> // You can replace this with a more sophisticated loading animation

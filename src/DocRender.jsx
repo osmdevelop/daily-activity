@@ -32,7 +32,7 @@ const styles = StyleSheet.create({
     borderBottomWidth: 0,
   },
   tableRow: {
-    margin: 'auto',
+    // margin: '10px',
     flexDirection: 'row',
     flexWrap: 'wrap',
   },
@@ -65,7 +65,7 @@ const styles = StyleSheet.create({
     margin: 5,
     fontSize: 10,
   },
-    margin: {
+  margin: {
     marginBottom: '10px',
   }
 });
@@ -94,14 +94,14 @@ const DocRender = ({ formData }) => {
               <Text style={styles.tableCell}>Client Name</Text>
             </View>
             <View style={styles.tableColHeader}>
-              <Text style={styles.tableCell}>Applications Filed</Text>
+              <Text style={styles.tableCell}>Activity</Text>
             </View>
             <View style={styles.tableColHeader}>
               <Text style={styles.tableCell}>Status (Filed, Additional Docs Needed)</Text>
             </View>
-            <View style={styles.tableColHeader}>
+            {/* <View style={styles.tableColHeader}>
               <Text style={styles.tableCell}>Other Services Provided</Text>
-            </View>
+            </View> */}
             <View style={styles.tableColHeader}>
               <Text style={styles.tableCell}>Info&Referral</Text>
             </View>
@@ -118,16 +118,16 @@ const DocRender = ({ formData }) => {
               <View style={styles.tableCol}>
                 <Text style={styles.tableCell}>{client.status}</Text>
               </View>
-              <View style={styles.tableCol}>
+              {/* <View style={styles.tableCol}>
                 <Text style={styles.tableCell}>{client.otherServices}</Text>
-              </View>
+              </View> */}
               <View style={styles.tableCol}>
                 <Text style={styles.tableCell}>{(client.infoAndRef || []).join(', ')}</Text>
               </View>
-              <View style={{...styles.tableCol, ...styles.margin}}>
-              <Text style={styles.tableCell}>Case Notes: {client.caseNotes}</Text>
-              <br></br>
-            </View>
+              <View style={{ ...styles.tableCol, ...styles.margin }}>
+                <Text style={styles.tableCell}>Case Notes: {client.caseNotes}</Text>
+                <br></br>
+              </View>
             </View>
           ))}
         </View>

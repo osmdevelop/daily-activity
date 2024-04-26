@@ -102,6 +102,9 @@ const DocRender = ({ formData }) => {
             <View style={styles.tableColHeader}>
               <Text style={styles.tableCell}>Other Services Provided</Text>
             </View>
+            <View style={styles.tableColHeader}>
+              <Text style={styles.tableCell}>Info&Referral</Text>
+            </View>
           </View>
           {/* Table Content */}
           {formData.clients.map((client, index) => (
@@ -117,6 +120,9 @@ const DocRender = ({ formData }) => {
               </View>
               <View style={styles.tableCol}>
                 <Text style={styles.tableCell}>{client.otherServices}</Text>
+              </View>
+              <View style={styles.tableCol}>
+                <Text style={styles.tableCell}>{(client.infoAndRef || []).join(', ')}</Text>
               </View>
               <View style={{...styles.tableCol, ...styles.margin}}>
               <Text style={styles.tableCell}>Case Notes: {client.caseNotes}</Text>

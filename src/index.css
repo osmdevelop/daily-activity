@@ -34,6 +34,11 @@ body {
   margin: 0;
 }
 
+.manager-group {
+  display: flex;
+  justify-content: space-between;
+}
+
 
 .form-group {
   margin-bottom: 20px;
@@ -45,6 +50,36 @@ body {
   border: 1px solid #ccc;
   border-radius: 4px;
   box-sizing: border-box;
+}
+
+.info-ref {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  margin-bottom: 8px;
+  margin-right: 18px;
+  gap: 10px;
+  }
+  
+  .info-ref label{
+  user-select: none;
+  cursor: pointer;
+  margin-left: 8px;
+  font-size: 14px;
+  /* Adjust font size as needed */
+  border: 1px solid #bbbbbb;
+  padding: 4px 3px; 
+}
+
+.info-ref label:hover {
+  border-radius: 0.35em;
+  background-color: #c2f0ff;
+}
+
+.info-ref input[type="checkbox"] {
+  cursor: pointer;
+  accent-color: #009b9b;  /* Change the checkbox color */
+  padding: 20px;
 }
 
 .btn {
@@ -135,9 +170,9 @@ hr {
   max-width: 700px;
   margin: 40px auto;
   padding: 30px;
-  background-color: #fff;
+  background-color: #ffffff;
   border-radius: 10px;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 10px 15px rgba(0, 0, 0, 0.2);
 }
 
 .form-title {
@@ -148,13 +183,16 @@ hr {
   font-weight: bold;
 }
 
-.form-group {
+
+.form-group,
+.form-services {
   margin-bottom: 20px;
   display: flex;
   flex-direction: column;
 }
 
-.form-group label {
+.form-group label,
+.form-services label {
   font-size: 18px;
   color: #444;
   margin-bottom: 10px;
@@ -164,7 +202,10 @@ hr {
 
 .form-group input[type="text"],
 .form-group input[type="date"],
-.form-group select {
+.form-group select,
+.form-services input[type="text"],
+.form-services input[type="date"],
+.form-services select {
   padding: 10px 15px;
   font-size: 18px;
   border-radius: 5px;
@@ -294,15 +335,13 @@ hr {
 
 .client-entry-case-notes {
   display: flex;
+  flex-direction: row;
   justify-content: space-between;
   align-items: flex-start;
 }
 
-.form-group.case-notes {
-  flex: 1;
-  margin-left: 8em;
-  /* Adjust the margin as needed */
-}
+
+
 
 .form-group.case-notes .case-notes-input {
   width: 100%; /* Or any other width as per your design */
@@ -310,4 +349,25 @@ hr {
   min-height: 50px; /* Minimum height to start with */
   resize: vertical;
   max-height: 200px;
+}
+
+.client-entry-applications {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(2, 0.4fr);
+    grid-column-gap: 0px;
+    grid-row-gap: 0px;
+  }
+
+.applications {
+  grid-area: 1 / 1 / 2 / 2;
+}
+
+
+.services {
+  grid-area: 1 / 2 / 2 / 3;
+}
+
+.case-notes {
+  grid-area: 2 / 1 / 3 / 3;
 }

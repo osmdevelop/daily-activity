@@ -119,7 +119,7 @@ const AdminPage = () => {
       {reportData && (
         <PDFDownloadLink
           document={<ReportRender reportData={reportData} />}
-          fileName={`daily_activity_report_${selectedCaseManager}_${date}.pdf`}
+          fileName={`${date}_${selectedCaseManager}_daily_activity.pdf`}
         >
           {({ blob, url, loading, error }) =>
             loading ? 'Preparing document...' : 'Download now'

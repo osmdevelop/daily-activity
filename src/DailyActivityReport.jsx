@@ -26,7 +26,7 @@ const DailyActivityReport = () => {
     caseManagerName: '',
     date: '',
     location: '',
-    clients: [{ fullName: '', applicationFiled: [], status: '', otherServices: '', caseNotes: '' }],
+    clients: [{ fullName: '', applicationFiled: [], status: '', otherServices: '', infoAndRef: [], services: [], caseNotes: '' }],
   };
 const navigate = useNavigate();
   const FormikDatePicker = ({ ...props }) => {
@@ -88,14 +88,15 @@ const handleSubmit = async (values) => {
 
 
   const validationSchema = Yup.object().shape({
-    caseManagerName: Yup.string().required('Case manager name is required'),
+    caseManagerName: Yup.string().required('Manager name is required'),
     date: Yup.date().required('Date is required'),
     location: Yup.string().required('Location is required'),
     clients: Yup.array().of(
       Yup.object().shape({
         fullName: Yup.string().required('Client full name is required'),
         status: Yup.string().required('Status is required'),
-        otherServices: Yup.string().required('Other services provided is required'),
+        infoAndRef: Yup.array().of(Yup.string()), // Validates an array of strings
+        // otherServices: Yup.string().required('Other services provided is required'),
       })
     ),
   });
@@ -117,25 +118,39 @@ const handleSubmit = async (values) => {
       >
         {({ values, handleChange, handleBlur }) => (
           <Form>
-            <div className="form-group">
-              <label>Case Manager Name:</label>
-              <Field as="select" name="caseManagerName" className="form-control">
-                <option value="">Select Case Manager</option>
-                <option value="Olena Levko-Sendeha">Olena Levko-Sendeha</option>
-                <option value="Nadiia Smolikevych">Nadiia Smolikevych</option>
-                <option value="Natalya Zavizistup">Natalya Zavizistup</option>
-                <option value="Darina Semenets">Darina Semenets</option>
-                <option value="Inha Ruda">Inha Ruda</option>
-                <option value="Iryna Hryniv">Iryna Hryniv</option>
-                <option value="Dariia Mykhalko">Dariia Mykhalko</option>
-              </Field>
-              <ErrorMessage name="caseManagerName" component="div" className="field-error" />
+            <div className='manager-group'>
+              <div className="form-group">
+                <label>Case Manager Name:</label>
+                <Field as="select" name="caseManagerName" className="form-control">
+                  <option value="">Select Case Manager</option>
+                  <option value="Olena Levko-Sendeha">Olena Levko-Sendeha</option>
+                  <option value="Nadiia Smolikevych">Nadiia Smolikevych</option>
+                  <option value="Natalya Zavizistup">Natalya Zavizistup</option>
+                  <option value="Darina Semenets">Darina Semenets</option>
+                  <option value="Inha Ruda">Inha Ruda</option>
+                  <option value="Iryna Hryniv">Iryna Hryniv</option>
+                  <option value="Dariia Mykhalko">Dariia Mykhalko</option>
+                </Field>
+                <ErrorMessage name="caseManagerName" component="div" className="field-error" />
+              </div>
+              <div className="form-group">
+                <label>Other Manager:</label>
+                <Field as="select" name="caseManagerName" className="form-control">
+                  <option value="">Select Manager</option>
+                  <option value="Nataliya Ponomaryova">Nataliya Ponomaryova</option>
+                  <option value="Eva Sigaev">Eva Sigaev</option>
+                  <option value="Angela Savenko">Angela Savenko</option>
+                  <option value="Olha Lykova">Olha Lykova</option>
+                  <option value="Inna Demianova">Inna Demianova</option>
+                </Field>
+                <ErrorMessage name="caseManagerName" component="div" className="field-error" />
+              </div>
             </div>
 
             <div className="form-group">
               <label htmlFor="date">Date of Activity:</label>
               <FormikDatePicker id="date" name="date" />
-              <ErrorMessage name="date" component="div" className="field-error" />
+              {/* <ErrorMessage name="date" component="div" className="field-error" /> */}
             </div>
 
             <div className="form-group">
@@ -161,7 +176,7 @@ const handleSubmit = async (values) => {
                         <hr />
 
                         <div className='remove-btn'>
-                        <h4 className='client-num'>Client {index + 1}</h4>
+                        <h4 className='client-num'>{client.fullName || `Client ${index + 1}`}</h4>
                         <button
                           type="button"
                           className="secondary remove"
@@ -176,64 +191,98 @@ const handleSubmit = async (values) => {
                           <ErrorMessage name={`clients.${index}.fullName`} component="div" className="field-error" />
                         </div>
 
-                        <div className="client-entry-case-notes">
-                        <div className="form-group">
-                          <label>Application Filed:</label>
-                          <div role="group" aria-labelledby="checkbox-group">
-                            <label className="checkbox-label">
-                              TPS
-                              <Field type="checkbox" name={`clients.${index}.applicationFiled`} value="TPS" />
-                              <span className="checkmark"></span>
-                            </label>
-                            <label className="checkbox-label">
-                              EAD
-                              <Field type="checkbox" name={`clients.${index}.applicationFiled`} value="EAD" />
-                              <span className="checkmark"></span>
-                            </label>
-                            <label className="checkbox-label">
-                              Re-Parole
-                              <Field type="checkbox" name={`clients.${index}.applicationFiled`} value="Re-Parole" />
-                              <span className="checkmark"></span>
-                            </label>
-                            <label className="checkbox-label">
-                              SNAP
-                              <Field type="checkbox" name={`clients.${index}.applicationFiled`} value="SNAP" />
-                              <span className="checkmark"></span>
-                            </label>
-                            <label className="checkbox-label">
-                              Cash Assistance
-                              <Field type="checkbox" name={`clients.${index}.applicationFiled`} value="Cash Assistance" />
-                              <span className="checkmark"></span>
-                            </label>
-                            <label className="checkbox-label">
-                              Medicaid
-                              <Field type="checkbox" name={`clients.${index}.applicationFiled`} value="M.A." />
-                              <span className="checkmark"></span>
-                            </label>
-                            <label className="checkbox-label">
-                              HFS
-                              <Field type="checkbox" name={`clients.${index}.applicationFiled`} value="HFS" />
-                              <span className="checkmark"></span>
-                            </label>
-                            <label className="checkbox-label">
-                              (Redetermination)
-                              <Field type="checkbox" name={`clients.${index}.applicationFiled`} value="(Redetermination)" />
-                              <span className="checkmark"></span>
-                            </label>
+                        <div className="client-entry-applications">
+                          <div className="form-group applications">
+                            <label>Application Filed:</label>
+                            <div role="group" aria-labelledby="checkbox-group">
+                              <label className="checkbox-label">
+                                TPS
+                                <Field type="checkbox" name={`clients.${index}.applicationFiled`} value="TPS" />
+                                <span className="checkmark"></span>
+                              </label>
+                              <label className="checkbox-label">
+                                EAD
+                                <Field type="checkbox" name={`clients.${index}.applicationFiled`} value="EAD" />
+                                <span className="checkmark"></span>
+                              </label>
+                              <label className="checkbox-label">
+                                Re-Parole
+                                <Field type="checkbox" name={`clients.${index}.applicationFiled`} value="Re-Parole" />
+                                <span className="checkmark"></span>
+                              </label>
+                              <label className="checkbox-label">
+                                SNAP
+                                <Field type="checkbox" name={`clients.${index}.applicationFiled`} value="SNAP" />
+                                <span className="checkmark"></span>
+                              </label>
+                              <label className="checkbox-label">
+                                Cash Assistance
+                                <Field type="checkbox" name={`clients.${index}.applicationFiled`} value="Cash Assistance" />
+                                <span className="checkmark"></span>
+                              </label>
+                              <label className="checkbox-label">
+                                Medicaid
+                                <Field type="checkbox" name={`clients.${index}.applicationFiled`} value="Medicaid" />
+                                <span className="checkmark"></span>
+                              </label>
+                              <label className="checkbox-label">
+                                HFS
+                                <Field type="checkbox" name={`clients.${index}.applicationFiled`} value="HFS" />
+                                <span className="checkmark"></span>
+                              </label>
+                              <label className="checkbox-label">
+                                (Redetermination)
+                                <Field type="checkbox" name={`clients.${index}.applicationFiled`} value="(Redetermination)" />
+                                <span className="checkmark"></span>
+                              </label>
+                            </div>
                           </div>
-                        </div>
 
-                        <div className="form-group case-notes">
-                          <label>Case Notes:</label>
-                          <Field
-                            name={`clients.${index}.caseNotes`}
-                            as="textarea"
-                            placeholder="Enter case notes"
-                            className="form-control case-notes-input"
-                          />
-                          <ErrorMessage name={`clients.${index}.caseNotes`} component="div" className="field-error" />
-                        </div>
-                        </div>
+                          <div className="form-group services">
+                            <label>Services:</label>
+                            <div role="group" aria-labelledby="checkbox-group">
+                              <label className="checkbox-label">
+                                Resume Creation
+                                <Field type="checkbox" name={`clients.${index}.services`} value="Resume Creation" />
+                                <span className="checkmark"></span>
+                              </label>
+                              <label className="checkbox-label">
+                                Interview Preparation
+                                <Field type="checkbox" name={`clients.${index}.services`} value="Interview Preparation" />
+                                <span className="checkmark"></span>
+                              </label>
+                              <label className="checkbox-label">
+                                Job Placement
+                                <Field type="checkbox" name={`clients.${index}.services`} value="Job Placement" />
+                                <span className="checkmark"></span>
+                              </label>
+                              <label className="checkbox-label">
+                                Medicare
+                                <Field type="checkbox" name={`clients.${index}.services`} value="Medicare" />
+                                <span className="checkmark"></span>
+                              </label>
+                              <label className="checkbox-label">
+                                I-134A
+                                <Field type="checkbox" name={`clients.${index}.services`} value="I-134A" />
+                                <span className="checkmark"></span>
+                              </label>
+                            </div>
+                          </div>
+                          
+                          <div className="form-group case-notes">
+                            <label>Case Notes:</label>
+                            <Field
+                              name={`clients.${index}.caseNotes`}
+                              as="textarea"
+                              placeholder="Enter case notes"
+                              className="form-control case-notes-input"
+                            />
+                            <ErrorMessage name={`clients.${index}.caseNotes`} component="div" className="field-error" />
+                          </div>
+
+                          
+
+                      </div>
 
 
                         <div className="form-group">
@@ -250,7 +299,58 @@ const handleSubmit = async (values) => {
                         </div>
 
                         <div className="form-group">
-                          <label>Other Services Provided:</label>
+                          <label>Information & Referral provided</label>
+                          <div role="group" aria-labelledby="checkbox-group-additional-options" className='info-ref'>
+                            <label>
+                              <Field type="checkbox" name={`clients.${index}.infoAndRef`} value="IDHS Benefits" />
+                              IDHS Benefits
+                            </label>
+                            <label>
+                              <Field type="checkbox" name={`clients.${index}.infoAndRef`} value="Health Plans" />
+                              Health Plans
+                            </label>
+                            <label>
+                              <Field type="checkbox" name={`clients.${index}.infoAndRef`} value="Employment" />
+                              Employment
+                            </label>
+                            <label>
+                              <Field type="checkbox" name={`clients.${index}.infoAndRef`} value="ESL Classes" />
+                              ESL Classes
+                            </label>
+                            <label>
+                              <Field type="checkbox" name={`clients.${index}.infoAndRef`} value="SSN" />
+                              SSN
+                            </label>
+                            <label>
+                              <Field type="checkbox" name={`clients.${index}.infoAndRef`} value="Immigration Services" />
+                              Immigration Services
+                            </label>
+                            <label>
+                              <Field type="checkbox" name={`clients.${index}.infoAndRef`} value="Driver License/ID" />
+                              Driver License/ID
+                            </label>
+                            <label>
+                              <Field type="checkbox" name={`clients.${index}.infoAndRef`} value="Law&Rights" />
+                              Law&Rights
+                            </label>
+                            <label>
+                              <Field type="checkbox" name={`clients.${index}.infoAndRef`} value="Mental Health" />
+                              Mental Health
+                            </label>
+                            <label>
+                              <Field type="checkbox" name={`clients.${index}.infoAndRef`} value="Other IDHS" />
+                              Other IDHS
+                            </label>
+                            <label>
+                              <Field type="checkbox" name={`clients.${index}.infoAndRef`} value="Other non-IDHS" />
+                              Other non-IDHS
+                            </label>
+                          </div>
+                        </div>
+
+
+                        <div className="form-group">
+                          <label>Other Services Provided (optional):</label>
                           <Field as="select" name={`clients.${index}.otherServices`} className="form-control">
                             <option value="">Select Service</option>
                             <option value="Translation and information">Translation and information</option>
@@ -261,16 +361,14 @@ const handleSubmit = async (values) => {
                           </Field>
                           <ErrorMessage name={`clients.${index}.otherServices`} component="div" className="field-error" />
                         </div>
-
-                        
                       </div>
                     ))}
                   <button
                     type="button"
                     className="secondary add"
-                    onClick={() => push({ fullName: '', applicationFiled: [], status: '', otherServices: '' })}
+                    onClick={() => push({ fullName: '', applicationFiled: [], status: '', otherServices: '', infoAndRef: [], services: [], })}
                   >
-                    Add Another Client <span>+</span>
+                    Add Next Client <span>+</span>
                   </button>
                 </div>
               )}

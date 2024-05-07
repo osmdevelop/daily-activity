@@ -70,7 +70,6 @@ const DailyActivityReport = () => {
       const docRef = await addReport(reportData);
       console.log("Report added to Firestore with ID:", docRef.id);
 
-      // Then, set formData for PDF generation
       setFormData(reportData);
       setSubmitted(true); // This will make the PDFDownloadLink appear
     } catch (error) {
@@ -101,9 +100,9 @@ const DailyActivityReport = () => {
 
   return (
     <div className="container">
-      <button onClick={() => navigate('/admin')} className="btn btn-secondary">
+      {/* <button onClick={() => navigate('/admin')} className="btn btn-secondary">
         Admin
-      </button>
+      </button> */}
       <div className='company-title'>
         <img src={logo} alt="logo" />
         <h3 className='company-name'>Selfreliance Association</h3>
